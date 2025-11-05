@@ -156,7 +156,7 @@ Di dalam folder tersebut, buat file dengan nama:
     </html>
     ```
 3. Buat file `proses_login.php`
-  ```html
+  ```php
   session_start();
   include "koneksi.php";
  $username = $_POST['username'];
