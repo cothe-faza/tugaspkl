@@ -111,7 +111,7 @@ Di dalam folder tersebut, buat file dengan nama:
     3. Tampilkan pesan berhasil atau gagal setelah proses input data dilakukan.
 
 #Tugas PKL 6/11/2025
-1. Buat koneksi ke database MySQL bernama `db_sekolah` dengan user `root` tanpa password menggunakan class `new mysqli`.
+1. Buat koneksi ke database MySQL bernama `db_datasiswa` dengan user `root` tanpa password menggunakan class `new mysqli` dan buat tabel baru dengan nama `tb_users` kolom `id_user`,`username`,`password`.
    ```php
    $servername = "localhost";
    $username   = "root";
