@@ -125,9 +125,9 @@ Di dalam folder tersebut, buat file dengan nama:
 2.  Buat form login
     ```html
     <?php session_start(); ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
     <meta charset="UTF-8">
     <title>Halaman Login</title>
     <style>
@@ -141,9 +141,9 @@ Di dalam folder tersebut, buat file dengan nama:
         button:hover { background: #0056b3; }
         .error { color: red; text-align: center; }
     </style>
-</head>
-<body>
-<div class="login-box">
+    </head>
+    <body>
+    <div class="login-box">
     <h3>Login</h3>
     <?php if (isset($_SESSION['error'])) { echo "<p class='error'>" . $_SESSION['error'] . "</p>"; unset($_SESSION['error']); } ?>
     <form action="proses_login.php" method="POST">
@@ -151,9 +151,9 @@ Di dalam folder tersebut, buat file dengan nama:
         <input type="password" name="password" placeholder="Password" required><br>
         <button type="submit">Login</button>
     </form>
-</div>
-</body>
-</html>
+    </div>
+    </body>
+    </html>
     ```
 3. Buat file `proses_login.php`
   ```html
