@@ -7,7 +7,7 @@ session_start();
  $password = $_POST['password'];
 
 $stmt = $conn->prepare("SELECT * FROM user WHERE username = ? LIMIT 1");
-$stmt->bind_param("$password, $username");
+$stmt->bind_param("ss", $username, $password);
 $stmt->execute();
 $result = $stmt->get_result();
 
