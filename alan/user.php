@@ -1,7 +1,7 @@
 <?php
    $data = "localhost";
    $login   = "root";
-   $password   = "";
+   $password   = "rpl12345";
    $database   = "db_login";
    $conn = new mysqli($data, $login, $password, $database);
    if ($conn->connect_error) {
