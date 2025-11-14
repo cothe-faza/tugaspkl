@@ -21,7 +21,7 @@
             width: 300px; margin: 100px auto; background: white;
             padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc;
         }
-        input { width: 300px; padding: 10px; margin: 5px 0; }
+        input { width: 275px; padding: 10px; margin: 5px 0; }
         button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
         button:hover { background: #0056b3; }
         .error { color: red; text-align: center; }
