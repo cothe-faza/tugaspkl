@@ -1,10 +1,9 @@
 
 <?php
-
 session_start();
   include "koneksi.php";
- $uname = $_POST('username');
- $password = $_POST('password');
+ $uname = $_POST['username'];
+$password = $_POST['password'];
 $stmt = $conn->prepare("SELECT * FROM user WHERE username = ? LIMIT 1");
 $stmt->bind_param("ss", $uname, $password);
 $stmt->execute();
@@ -17,16 +16,16 @@ if ($result->num_rows > 0) {
     if (password_verify($password, $data['password'])) {
         $_SESSION['login'] = true;
         $_SESSION['username'] = $data['username'];
-        header("Location: user.php");
+        header("Location: dashboard.php");
         exit;
     } else {
         $_SESSION['error'] = "Password salah!";
-        header("Location: proses_login.php");
+        header("Location: login.php");
         exit;
     }
     } else {
     $_SESSION['error'] = "Username tidak ditemukan!";
-    header("Location: proses_login.php");
+    header("Location: login.php");
     exit;
     }
 
