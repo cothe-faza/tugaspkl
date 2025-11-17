@@ -6,7 +6,7 @@ $username = $_POST['username'];
 
 if ($conn->connect_error) {
     $_SESSION['error'] = "Koneksi database gagal: " . $conn->connect_error;
-    header("Location: login.php");
+    header("Location: user.php");
     exit;
 }
 
@@ -15,7 +15,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $password = $_POST['password'];
 } else {
     $_SESSION['error'] = "Mohon masukkan username dan password.";
-    header("Location: login.php");
+    header("Location: user.php");
     exit;
 }
 
@@ -36,12 +36,12 @@ if ($result->num_rows > 0) {
         exit;
     } else {
         $_SESSION['error'] = "Password salah!";
-        header("Location: login.php");
+        header("Location: user.php");
         exit;
     }
 } else {
     $_SESSION['error'] = "Username tidak ditemukan!";
-    header("Location: login.php");
+    header("Location: user.php");
     exit;
 }
 ?>
