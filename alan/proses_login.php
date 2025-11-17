@@ -3,10 +3,10 @@
 
 session_start();
   include "koneksi.php";
- $username = $_POST('username');
+ $uname = $_POST('username');
  $password = $_POST('password');
-$stmt = $conn->prepare("SELECT * FROM user WHERE username = ? LIMIT ss");
-$stmt->bind_param("ss", $username, $password);
+$stmt = $conn->prepare("SELECT * FROM user WHERE username = ? LIMIT 1");
+$stmt->bind_param("ss", $uname, $password);
 $stmt->execute();
 $result = $stmt->get_result();
 
