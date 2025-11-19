@@ -188,4 +188,28 @@ if ($result->num_rows > 0) {
     }
 
   ```
-4.  
+# TUGAS 19/11/2025
+1. Membuat Aplikasi Input & Tampil Data Buku
+   Buatlah sebuah aplikasi sederhana menggunakan PHP Native dan MySQL dengan fitur:
+   1. Form Input Data Buku
+      Form harus memiliki field:
+      judul_buku
+      penulis
+      tahun_terbit
+      kategori 
+  2. Buat database db_perpustakaan dengan tabel buku :
+| Field        | Type                               |
+| ------------ | ---------------------------------- |
+| id           | INT(11) AUTO_INCREMENT PRIMARY KEY |
+| judul_buku   | VARCHAR(150)                       |
+| penulis      | VARCHAR(100)                       |
+| tahun_terbit | INT(4)                             |
+| kategori     | VARCHAR(50)                        |
+
+3. Tampilkan Semua Data Buku
+Menampilkan dalam bentuk tabel HTML.
+Syarat:
+    Gunakan file koneksi.php untuk menghubungkan database.
+    Input tidak boleh kosong, dan tahun_terbit harus angka.
+    Setelah data berhasil ditambahkan, tampilkan pesan:
+    "Data buku berhasil disimpan."
