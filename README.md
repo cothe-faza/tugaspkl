@@ -110,3 +110,106 @@ Di dalam folder tersebut, buat file dengan nama:
     2. Pastikan koneksi ke database berfungsi dengan benar.
     3. Tampilkan pesan berhasil atau gagal setelah proses input data dilakukan.
 
+#Tugas PKL 6/11/2025
+1. Buat koneksi ke database MySQL bernama `db_datasiswa` dengan user `root` tanpa password menggunakan class `new mysqli` dan buat tabel baru dengan nama `tb_users` kolom `id_user`,`username`,`password`.
+   ```php
+   $servername = "localhost";
+   $username   = "root";
+   $password   = "";
+   $database   = "db_login";
+   $conn = new mysqli($servername, $username, $password, $database);
+   if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+   }
+   ```
+2.  Buat form login
+    ```html
+    <?php session_start(); ?>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+    <meta charset="UTF-8">
+    <title>Halaman Login</title>
+    <style>
+        body { font-family: Arial; background: #f4f4f4; }
+        .login-box {
+            width: 300px; margin: 100px auto; background: white;
+            padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc;
+        }
+        input { width: 100%; padding: 10px; margin: 5px 0; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .error { color: red; text-align: center; }
+    </style>
+    </head>
+    <body>
+    <div class="login-box">
+    <h3>Login</h3>
+    <?php if (isset($_SESSION['error'])) { echo "<p class='error'>" . $_SESSION['error'] . "</p>"; unset($_SESSION['error']); } ?>
+    <form action="proses_login.php" method="POST">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Login</button>
+    </form>
+    </div>
+    </body>
+    </html>
+    ```
+3. Buat file `proses_login.php`
+  ```php
+  session_start();
+  include "koneksi.php";
+ $username = $_POST['username'];
+ $password = $_POST['password'];
+
+$stmt = $conn->prepare("SELECT * FROM user WHERE username = ? LIMIT 1");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $data = $result->fetch_assoc();
+
+    // Verifikasi password
+    if (password_verify($password, $data['password'])) {
+        $_SESSION['login'] = true;
+        $_SESSION['username'] = $data['username'];
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $_SESSION['error'] = "Password salah!";
+        header("Location: login.php");
+        exit;
+    }
+    } else {
+    $_SESSION['error'] = "Username tidak ditemukan!";
+    header("Location: login.php");
+    exit;
+    }
+
+  ```
+# TUGAS 19/11/2025
+1. Membuat Aplikasi Input & Tampil Data Buku
+   Buatlah sebuah aplikasi sederhana menggunakan PHP Native dan MySQL dengan fitur:
+   1. Form Input Data Buku
+      Form harus memiliki field:
+      judul_buku
+      penulis
+      tahun_terbit
+      kategori 
+  2. Buat database db_perpustakaan dengan tabel buku :
+| Field        | Type                               |
+| ------------ | ---------------------------------- |
+| id           | INT(11) AUTO_INCREMENT PRIMARY KEY |
+| judul_buku   | VARCHAR(150)                       |
+| penulis      | VARCHAR(100)                       |
+| tahun_terbit | INT(4)                             |
+| kategori     | VARCHAR(50)                        |
+
+3. Tampilkan Semua Data Buku
+Menampilkan dalam bentuk tabel HTML.
+Syarat:
+    Gunakan file koneksi.php untuk menghubungkan database.
+    Input tidak boleh kosong, dan tahun_terbit harus angka.
+    Setelah data berhasil ditambahkan, tampilkan pesan:
+    "Data buku berhasil disimpan."
