@@ -213,3 +213,309 @@ Syarat:
     Input tidak boleh kosong, dan tahun_terbit harus angka.
     Setelah data berhasil ditambahkan, tampilkan pesan:
     "Data buku berhasil disimpan."
+# TUGAS 20/11/2025
+## CRUD PHP + MySQL menggunakan OOP + PDO
+1. Buat stuktur folder dibawah didalam folder masing-masing
+```pgsql
+oop-pdo-crud-siswa/
+│── config/
+│     └── Database.php
+│── classes/
+│     └── Siswa.php
+│── views/
+│     ├── index.php
+│     ├── tambah.php
+│     ├── edit.php
+│── proses/
+│     ├── tambah_proses.php
+│     ├── edit_proses.php
+│     ├── hapus_proses.php
+│── db_siswa.sql
+│── README.md
+```
+2. File: config/Database.php
+```php
+<?php
+class Database {
+    private $host = "localhost";
+    private $db   = "db_siswa";
+    private $user = "root";
+    private $pass = "";
+    public  $conn;
+    public function connect() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db, 
+                $this->user, 
+                $this->pass
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Koneksi gagal: " . $e->getMessage();
+        }
+        return $this->conn;
+    }
+}
+```
+2. File: classes/Siswa.php
+```php
+<?php
+class Siswa {
+    private $conn;
+    private $table = "tb_siswa";
+
+    public $id;
+    public $nama;
+    public $kelas;
+    public $jurusan;
+    public $no_hp;
+
+    public function __construct($db) {
+        $this->conn = $db;
+    }
+
+    public function read() {
+        $query = "SELECT * FROM " . $this->table;
+        $stmt  = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function create() {
+        $query = "INSERT INTO $this->table 
+            SET nama=:nama, kelas=:kelas, jurusan=:jurusan, no_hp=:no_hp";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":nama", $this->nama);
+        $stmt->bindParam(":kelas", $this->kelas);
+        $stmt->bindParam(":jurusan", $this->jurusan);
+        $stmt->bindParam(":no_hp", $this->no_hp);
+
+        return $stmt->execute();
+    }
+
+    public function readOne() {
+        $query = "SELECT * FROM $this->table WHERE id = ? LIMIT 1";
+        $stmt  = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->nama    = $row['nama'];
+        $this->kelas   = $row['kelas'];
+        $this->jurusan = $row['jurusan'];
+        $this->no_hp   = $row['no_hp'];
+    }
+
+    public function update() {
+        $query = "UPDATE $this->table 
+            SET nama=:nama, kelas=:kelas, jurusan=:jurusan, no_hp=:no_hp
+            WHERE id=:id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":nama", $this->nama);
+        $stmt->bindParam(":kelas", $this->kelas);
+        $stmt->bindParam(":jurusan", $this->jurusan);
+        $stmt->bindParam(":no_hp", $this->no_hp);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    public function delete() {
+        $query = "DELETE FROM $this->table WHERE id=:id";
+        $stmt  = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+}
+```
+3. File: views/index.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$data = $siswaObj->read();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Siswa</title>
+</head>
+<body>
+
+<h2>Data Siswa (OOP + PDO)</h2>
+
+<a href="tambah.php">+ Tambah Data</a>
+<br><br>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Jurusan</th>
+        <th>No HP</th>
+        <th>Aksi</th>
+    </tr>
+
+    <?php while ($row = $data->fetch(PDO::FETCH_ASSOC)) { ?>
+    <tr>
+        <td><?= $row['id']; ?></td>
+        <td><?= $row['nama']; ?></td>
+        <td><?= $row['kelas']; ?></td>
+        <td><?= $row['jurusan']; ?></td>
+        <td><?= $row['no_hp']; ?></td>
+        <td>
+            <a href="edit.php?id=<?= $row['id']; ?>">Edit</a> | 
+            <a href="../proses/hapus_proses.php?id=<?= $row['id']; ?>"
+               onclick="return confirm('Hapus data?')">Hapus</a>
+        </td>
+    </tr>
+    <?php } ?>
+
+</table>
+
+</body>
+</html>
+```
+4. File: views/tambah.php
+```php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tambah Data</title>
+</head>
+<body>
+
+<h2>Tambah Data Siswa</h2>
+
+<form method="POST" action="../proses/tambah_proses.php">
+    Nama: <input type="text" name="nama" required><br><br>
+    Kelas: <input type="text" name="kelas" required><br><br>
+    Jurusan: <input type="text" name="jurusan" required><br><br>
+    No HP: <input type="text" name="no_hp" required><br><br>
+
+    <input type="submit" value="Simpan">
+</form>
+
+</body>
+</html>
+```
+5. File: views/edit.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->id = $_GET['id'];
+$siswaObj->readOne();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Data</title>
+</head>
+<body>
+
+<h2>Edit Data Siswa</h2>
+
+<form method="POST" action="../proses/edit_proses.php">
+    <input type="hidden" name="id" value="<?= $siswaObj->id; ?>">
+
+    Nama: <input type="text" name="nama" value="<?= $siswaObj->nama; ?>" required><br><br>
+    Kelas: <input type="text" name="kelas" value="<?= $siswaObj->kelas; ?>" required><br><br>
+    Jurusan: <input type="text" name="jurusan" value="<?= $siswaObj->jurusan; ?>" required><br><br>
+    No HP: <input type="text" name="no_hp" value="<?= $siswaObj->no_hp; ?>" required><br><br>
+
+    <input type="submit" value="Update">
+</form>
+
+</body>
+</html>
+```
+6. File: proses/tambah_proses.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->nama    = $_POST['nama'];
+$siswaObj->kelas   = $_POST['kelas'];
+$siswaObj->jurusan = $_POST['jurusan'];
+$siswaObj->no_hp   = $_POST['no_hp'];
+
+$siswaObj->create();
+
+header("Location: ../views/index.php");
+?>
+```
+7. File: proses/edit_proses.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->id      = $_POST['id'];
+$siswaObj->nama    = $_POST['nama'];
+$siswaObj->kelas   = $_POST['kelas'];
+$siswaObj->jurusan = $_POST['jurusan'];
+$siswaObj->no_hp   = $_POST['no_hp'];
+
+$siswaObj->update();
+
+header("Location: ../views/index.php");
+?>
+```
+8. File: proses/hapus_proses.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->id = $_GET['id'];
+$siswaObj->delete();
+
+header("Location: ../views/index.php");
+?>
+```
+9. Schema SQL dengan nama database db_siswa
+```sql
+CREATE DATABASE db_siswa;
+USE db_siswa;
+
+CREATE TABLE tb_siswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    kelas VARCHAR(20),
+    jurusan VARCHAR(50),
+    no_hp VARCHAR(20)
+);
+```
