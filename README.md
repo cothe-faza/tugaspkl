@@ -214,6 +214,7 @@ Syarat:
     Setelah data berhasil ditambahkan, tampilkan pesan:
     "Data buku berhasil disimpan."
 # TUGAS 20/11/2025
+## MATERI
 1. Pengertian OOP
 Object-Oriented Programming (OOP) adalah paradigma pemrograman yang memodelkan program sebagai sekumpulan objek yang saling berinteraksi. Objek tersebut memiliki data (properties) dan perilaku (methods).
 Tujuan OOP:
@@ -275,8 +276,54 @@ abstract class Shape {
     abstract public function area();
 }
   ```
-
+5. Struktur Dasar Class dan Object
+ a. Membuat Class
+```php
+class Produk {
+    public $nama;
+    public $harga;
+    public function info() {
+        return "{$this->nama} - Rp {$this->harga}";
+    }
+}
+```
+ b. Membuat Object
+```php
+$produk1 = new Produk();
+$produk1->nama = "Laptop";
+$produk1->harga = 10000000;
+echo $produk1->info();
+```
+6. Constructor
+Method khusus yang otomatis dijalankan saat object dibuat.
+```php
+class Produk {
+    public $nama;
+    public $harga;
+    public function __construct($nama, $harga) {
+        $this->nama  = $nama;
+        $this->harga = $harga;
+    }
+}
+$p = new Produk("Mouse", 120000);
+```
+7. Akses Modifier
+```table
+| Modifier      | Keterangan                                         |
+| ------------- | -------------------------------------------------- |
+| **public**    | Bisa diakses dari mana saja                        |
+| **private**   | Hanya bisa diakses di dalam class itu sendiri      |
+| **protected** | Bisa diakses oleh class itu sendiri dan turunannya |
+```
+Contoh :
+```php
+class User {
+    public $username;
+    private $password;
+}
+```
 ## CRUD PHP + MySQL menggunakan OOP + PDO
+## TUGAS PRAKTIK
 1. Buat stuktur folder dibawah didalam folder masing-masing
 ```pgsql
 oop-pdo-crud-siswa/
