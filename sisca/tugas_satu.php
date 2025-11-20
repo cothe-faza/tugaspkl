@@ -1,3 +1,1 @@
-<?php
-echo "Hello, Sisca!";
-?>
+tugas-satu-sisca

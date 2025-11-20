@@ -188,4 +188,443 @@ if ($result->num_rows > 0) {
     }
 
   ```
-4.  
+# TUGAS 19/11/2025
+1. Membuat Aplikasi Input & Tampil Data Buku
+   Buatlah sebuah aplikasi sederhana menggunakan PHP Native dan MySQL dengan fitur:
+   1. Form Input Data Buku
+      Form harus memiliki field:
+      judul_buku
+      penulis
+      tahun_terbit
+      kategori 
+  2. Buat database db_perpustakaan dengan tabel buku :
+| Field        | Type                               |
+| ------------ | ---------------------------------- |
+| id           | INT(11) AUTO_INCREMENT PRIMARY KEY |
+| judul_buku   | VARCHAR(150)                       |
+| penulis      | VARCHAR(100)                       |
+| tahun_terbit | INT(4)                             |
+| kategori     | VARCHAR(50)                        |
+
+3. Tampilkan Semua Data Buku
+Menampilkan dalam bentuk tabel HTML.
+Syarat:
+    Gunakan file koneksi.php untuk menghubungkan database.
+    Input tidak boleh kosong, dan tahun_terbit harus angka.
+    Setelah data berhasil ditambahkan, tampilkan pesan:
+    "Data buku berhasil disimpan."
+# TUGAS 20/11/2025
+## MATERI
+1. Pengertian OOP
+Object-Oriented Programming (OOP) adalah paradigma pemrograman yang memodelkan program sebagai sekumpulan objek yang saling berinteraksi. Objek tersebut memiliki data (properties) dan perilaku (methods).
+Tujuan OOP:
+- Mempermudah pengelolaan kode.
+- Mengurangi duplikasi.
+- Membuat program lebih mudah dikembangkan (scalable).
+- Meningkatkan keamanan kode melalui enkapsulasi.
+2. Konsep Dasar OOP (4 Pilar Utama)
+  a. Encapsulation (Enkapsulasi)
+     Menyembunyikan data agar tidak bisa diakses langsung dari luar kelas.
+     Biasanya menggunakan akses modifier:
+     - public
+     - private
+     - protected
+    Contoh :
+```php
+class User {
+    private $password;
+    public function setPassword($pass) {
+        $this->password = password_hash($pass, PASSWORD_BCRYPT);
+    }
+    public function getPasswordHash() {
+        return $this->password;
+    }
+}
+```
+2. Inheritance (Pewarisan)
+   Mewarisi properti dan method dari kelas induk (parent class).
+   Contoh:
+   ```php
+   class Controller {
+    public function view() {
+        echo "Render halaman";
+    }
+   }
+   class HomeController extends Controller {
+   }
+   ```
+   HomeController otomatis punya method view().
+3. Polymorphism (Polimorfisme)
+   Satu method bisa memiliki bentuk berbeda pada class turunan.
+   Contoh:
+   ```php
+   class Animal {
+    public function sound() {
+        return "Unknown sound";
+    }
+   }
+   class Cat extends Animal {
+    public function sound() {
+        return "Meow";
+    }
+   }
+   ```
+4. Abstraction (Abstraksi)
+   Menyembunyikan detail dan hanya menampilkan fitur penting. Menggunakan abstract class atau interface.
+  ```php
+abstract class Shape {
+    abstract public function area();
+}
+  ```
+5. Struktur Dasar Class dan Object
+ a. Membuat Class
+```php
+class Produk {
+    public $nama;
+    public $harga;
+    public function info() {
+        return "{$this->nama} - Rp {$this->harga}";
+    }
+}
+```
+ b. Membuat Object
+```php
+$produk1 = new Produk();
+$produk1->nama = "Laptop";
+$produk1->harga = 10000000;
+echo $produk1->info();
+```
+6. Constructor
+Method khusus yang otomatis dijalankan saat object dibuat.
+```php
+class Produk {
+    public $nama;
+    public $harga;
+    public function __construct($nama, $harga) {
+        $this->nama  = $nama;
+        $this->harga = $harga;
+    }
+}
+$p = new Produk("Mouse", 120000);
+```
+7. Akses Modifier
+```table
+| Modifier      | Keterangan                                         |
+| ------------- | -------------------------------------------------- |
+| **public**    | Bisa diakses dari mana saja                        |
+| **private**   | Hanya bisa diakses di dalam class itu sendiri      |
+| **protected** | Bisa diakses oleh class itu sendiri dan turunannya |
+```
+Contoh :
+```php
+class User {
+    public $username;
+    private $password;
+}
+```
+## CRUD PHP + MySQL menggunakan OOP + PDO
+## TUGAS PRAKTIK
+1. Buat stuktur folder dibawah didalam folder masing-masing
+```pgsql
+oop-pdo-crud-siswa/
+│── config/
+│     └── Database.php
+│── classes/
+│     └── Siswa.php
+│── views/
+│     ├── index.php
+│     ├── tambah.php
+│     ├── edit.php
+│── proses/
+│     ├── tambah_proses.php
+│     ├── edit_proses.php
+│     ├── hapus_proses.php
+│── db_siswa.sql
+│── README.md
+```
+2. File: config/Database.php
+```php
+<?php
+class Database {
+    private $host = "localhost";
+    private $db   = "db_siswa";
+    private $user = "root";
+    private $pass = "";
+    public  $conn;
+    public function connect() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db, 
+                $this->user, 
+                $this->pass
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Koneksi gagal: " . $e->getMessage();
+        }
+        return $this->conn;
+    }
+}
+```
+2. File: classes/Siswa.php
+```php
+<?php
+class Siswa {
+    private $conn;
+    private $table = "tb_siswa";
+
+    public $id;
+    public $nama;
+    public $kelas;
+    public $jurusan;
+    public $no_hp;
+
+    public function __construct($db) {
+        $this->conn = $db;
+    }
+
+    public function read() {
+        $query = "SELECT * FROM " . $this->table;
+        $stmt  = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function create() {
+        $query = "INSERT INTO $this->table 
+            SET nama=:nama, kelas=:kelas, jurusan=:jurusan, no_hp=:no_hp";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":nama", $this->nama);
+        $stmt->bindParam(":kelas", $this->kelas);
+        $stmt->bindParam(":jurusan", $this->jurusan);
+        $stmt->bindParam(":no_hp", $this->no_hp);
+
+        return $stmt->execute();
+    }
+
+    public function readOne() {
+        $query = "SELECT * FROM $this->table WHERE id = ? LIMIT 1";
+        $stmt  = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->nama    = $row['nama'];
+        $this->kelas   = $row['kelas'];
+        $this->jurusan = $row['jurusan'];
+        $this->no_hp   = $row['no_hp'];
+    }
+
+    public function update() {
+        $query = "UPDATE $this->table 
+            SET nama=:nama, kelas=:kelas, jurusan=:jurusan, no_hp=:no_hp
+            WHERE id=:id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":nama", $this->nama);
+        $stmt->bindParam(":kelas", $this->kelas);
+        $stmt->bindParam(":jurusan", $this->jurusan);
+        $stmt->bindParam(":no_hp", $this->no_hp);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    public function delete() {
+        $query = "DELETE FROM $this->table WHERE id=:id";
+        $stmt  = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+}
+```
+3. File: views/index.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$data = $siswaObj->read();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Siswa</title>
+</head>
+<body>
+
+<h2>Data Siswa (OOP + PDO)</h2>
+
+<a href="tambah.php">+ Tambah Data</a>
+<br><br>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Jurusan</th>
+        <th>No HP</th>
+        <th>Aksi</th>
+    </tr>
+
+    <?php while ($row = $data->fetch(PDO::FETCH_ASSOC)) { ?>
+    <tr>
+        <td><?= $row['id']; ?></td>
+        <td><?= $row['nama']; ?></td>
+        <td><?= $row['kelas']; ?></td>
+        <td><?= $row['jurusan']; ?></td>
+        <td><?= $row['no_hp']; ?></td>
+        <td>
+            <a href="edit.php?id=<?= $row['id']; ?>">Edit</a> | 
+            <a href="../proses/hapus_proses.php?id=<?= $row['id']; ?>"
+               onclick="return confirm('Hapus data?')">Hapus</a>
+        </td>
+    </tr>
+    <?php } ?>
+
+</table>
+
+</body>
+</html>
+```
+4. File: views/tambah.php
+```php
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tambah Data</title>
+</head>
+<body>
+
+<h2>Tambah Data Siswa</h2>
+
+<form method="POST" action="../proses/tambah_proses.php">
+    Nama: <input type="text" name="nama" required><br><br>
+    Kelas: <input type="text" name="kelas" required><br><br>
+    Jurusan: <input type="text" name="jurusan" required><br><br>
+    No HP: <input type="text" name="no_hp" required><br><br>
+
+    <input type="submit" value="Simpan">
+</form>
+
+</body>
+</html>
+```
+5. File: views/edit.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->id = $_GET['id'];
+$siswaObj->readOne();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Data</title>
+</head>
+<body>
+
+<h2>Edit Data Siswa</h2>
+
+<form method="POST" action="../proses/edit_proses.php">
+    <input type="hidden" name="id" value="<?= $siswaObj->id; ?>">
+
+    Nama: <input type="text" name="nama" value="<?= $siswaObj->nama; ?>" required><br><br>
+    Kelas: <input type="text" name="kelas" value="<?= $siswaObj->kelas; ?>" required><br><br>
+    Jurusan: <input type="text" name="jurusan" value="<?= $siswaObj->jurusan; ?>" required><br><br>
+    No HP: <input type="text" name="no_hp" value="<?= $siswaObj->no_hp; ?>" required><br><br>
+
+    <input type="submit" value="Update">
+</form>
+
+</body>
+</html>
+```
+6. File: proses/tambah_proses.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->nama    = $_POST['nama'];
+$siswaObj->kelas   = $_POST['kelas'];
+$siswaObj->jurusan = $_POST['jurusan'];
+$siswaObj->no_hp   = $_POST['no_hp'];
+
+$siswaObj->create();
+
+header("Location: ../views/index.php");
+?>
+```
+7. File: proses/edit_proses.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->id      = $_POST['id'];
+$siswaObj->nama    = $_POST['nama'];
+$siswaObj->kelas   = $_POST['kelas'];
+$siswaObj->jurusan = $_POST['jurusan'];
+$siswaObj->no_hp   = $_POST['no_hp'];
+
+$siswaObj->update();
+
+header("Location: ../views/index.php");
+?>
+```
+8. File: proses/hapus_proses.php
+```php
+<?php
+include '../config/Database.php';
+include '../classes/Siswa.php';
+
+$db       = new Database();
+$conn     = $db->connect();
+$siswaObj = new Siswa($conn);
+
+$siswaObj->id = $_GET['id'];
+$siswaObj->delete();
+
+header("Location: ../views/index.php");
+?>
+```
+9. Schema SQL dengan nama database db_siswa
+```sql
+CREATE DATABASE db_siswa;
+USE db_siswa;
+
+CREATE TABLE tb_siswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    kelas VARCHAR(20),
+    jurusan VARCHAR(50),
+    no_hp VARCHAR(20)
+);
+```
