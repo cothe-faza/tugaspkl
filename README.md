@@ -214,6 +214,68 @@ Syarat:
     Setelah data berhasil ditambahkan, tampilkan pesan:
     "Data buku berhasil disimpan."
 # TUGAS 20/11/2025
+1. Pengertian OOP
+Object-Oriented Programming (OOP) adalah paradigma pemrograman yang memodelkan program sebagai sekumpulan objek yang saling berinteraksi. Objek tersebut memiliki data (properties) dan perilaku (methods).
+Tujuan OOP:
+- Mempermudah pengelolaan kode.
+- Mengurangi duplikasi.
+- Membuat program lebih mudah dikembangkan (scalable).
+- Meningkatkan keamanan kode melalui enkapsulasi.
+2. Konsep Dasar OOP (4 Pilar Utama)
+  a. Encapsulation (Enkapsulasi)
+     Menyembunyikan data agar tidak bisa diakses langsung dari luar kelas.
+     Biasanya menggunakan akses modifier:
+     - public
+     - private
+     - protected
+    Contoh :
+```php
+class User {
+    private $password;
+    public function setPassword($pass) {
+        $this->password = password_hash($pass, PASSWORD_BCRYPT);
+    }
+    public function getPasswordHash() {
+        return $this->password;
+    }
+}
+```
+2. Inheritance (Pewarisan)
+   Mewarisi properti dan method dari kelas induk (parent class).
+   Contoh:
+   ```php
+   class Controller {
+    public function view() {
+        echo "Render halaman";
+    }
+   }
+   class HomeController extends Controller {
+   }
+   ```
+   HomeController otomatis punya method view().
+3. Polymorphism (Polimorfisme)
+   Satu method bisa memiliki bentuk berbeda pada class turunan.
+   Contoh:
+   ```php
+   class Animal {
+    public function sound() {
+        return "Unknown sound";
+    }
+   }
+   class Cat extends Animal {
+    public function sound() {
+        return "Meow";
+    }
+   }
+   ```
+4. Abstraction (Abstraksi)
+   Menyembunyikan detail dan hanya menampilkan fitur penting. Menggunakan abstract class atau interface.
+  ```php
+abstract class Shape {
+    abstract public function area();
+}
+  ```
+
 ## CRUD PHP + MySQL menggunakan OOP + PDO
 1. Buat stuktur folder dibawah didalam folder masing-masing
 ```pgsql
