@@ -1,6 +1,6 @@
 <?php
 class Siswa {
-    private $conn;  = "db_datasiswa";
+    private $conn; 
     private $table = "tb_siswa";
 
     public $id;
