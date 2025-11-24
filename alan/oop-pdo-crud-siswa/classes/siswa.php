@@ -15,7 +15,7 @@ class Siswa {
 
     public function read() {
         $query = "SELECT * FROM " . $this->table;
-        $stmt  = $this->conn->prepare($query);
+        $stmt  = $this->$conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
