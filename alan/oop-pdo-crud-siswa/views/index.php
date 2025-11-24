@@ -6,7 +6,7 @@ $db       = new Database();
 $conn     = $db->connect();
 $siswaObj = new Siswa($conn);
 
-$data = $siswaObj->read($conn);
+$data = $siswaObj->read();
 ?>
 <!DOCTYPE html>
 <html>
