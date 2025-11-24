@@ -72,4 +72,4 @@ class Siswa {
 
         return $stmt->execute();
     }
-}
+}?>
