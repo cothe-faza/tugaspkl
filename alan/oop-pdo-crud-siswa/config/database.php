@@ -3,7 +3,7 @@ class Database {
     private $host = "localhost";
     private $db   = "db_siswa";
     private $user = "root";
-    private $pass = "";
+    private $pass = "rpl12345";
     public  $conn;
     public function connect() {
         $this->conn = null;

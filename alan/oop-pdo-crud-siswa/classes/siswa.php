@@ -14,17 +14,17 @@ class Siswa {
     }
 
     public function read() {
-        $conn = "SELECT * FROM " . $this->table;
-        $stmt  = $this->conn->prepare($conn);
+        $query = "SELECT * FROM " . $this->table;
+        $stmt  = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
 
     public function create() {
-        $conn = "INSERT INTO $this->table 
+        $query = "INSERT INTO $this->table 
             SET nama=:nama, kelas=:kelas, jurusan=:jurusan, no_hp=:no_hp";
 
-        $stmt = $this->conn->prepare($conn);
+        $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":nama", $this->nama);
         $stmt->bindParam(":kelas", $this->kelas);
@@ -35,8 +35,8 @@ class Siswa {
     }
 
     public function readOne() {
-        $conn = "SELECT * FROM $this->table WHERE id = ? LIMIT 1";
-        $stmt  = $this->conn->prepare($conn);
+        $query = "SELECT * FROM $this->table WHERE id = ? LIMIT 1";
+        $stmt  = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
 
@@ -49,11 +49,11 @@ class Siswa {
     }
 
     public function update() {
-        $conn = "UPDATE $this->table 
+        $query = "UPDATE $this->table 
             SET nama=:nama, kelas=:kelas, jurusan=:jurusan, no_hp=:no_hp
             WHERE id=:id";
 
-        $stmt = $this->conn->prepare($conn);
+        $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":nama", $this->nama);
         $stmt->bindParam(":kelas", $this->kelas);
@@ -65,11 +65,11 @@ class Siswa {
     }
 
     public function delete() {
-        $conn = "DELETE FROM $this->table WHERE id=:id";
-        $stmt  = $this->conn->prepare($conn);
+        $query = "DELETE FROM $this->table WHERE id=:id";
+        $stmt  = $this->conn->prepare($query);
 
         $stmt->bindParam(":id", $this->id);
 
         return $stmt->execute();
     }
-}?>
+}
