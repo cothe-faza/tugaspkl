@@ -1,7 +1,7 @@
 <?php
 class Siswa {
     private $conn; 
-    private $table = "db_datasiswa";
+    private $table = "tb_siswa";
 
     public $id;
     public $nama;
