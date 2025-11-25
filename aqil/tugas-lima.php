@@ -62,11 +62,11 @@
             ?>
        <tr>
        <td><?=$no++?></td>
-       <td><?=$data['kd_barang']?></td>
-       <td><?=$data['nama_brg']?></td>
-       <td>Rp.   <?=number_format($data['harga_brg'])?></td>
-       <td><?=$data['jumlah_brg']?></td>
-       <td><?=$data['kondisi_brg']?></td>
+       <td><?=$data['no']?></td>
+       <td><?=$data['nama_barang']?></td>
+       <td>Rp.   <?=number_format($data['harga_barang'])?></td>
+       <td><?=$data['jumlah_barang']?></td>
+       <td><?=$data['kondisi_barang']?></td>
        <td>
             <a href="#" class="btn btn-warning btn-sm">Edit</a>
             <a href="#" class="btn btn-danger btn-sm">Hapus</a>
