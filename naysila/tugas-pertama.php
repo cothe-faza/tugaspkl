@@ -1,1 +1,0 @@
-tugas-satu-naysila
