@@ -32,10 +32,10 @@ $data = $siswaObj->read();
 
     <?php while ($row = $data->fetch(PDO::FETCH_ASSOC)) { ?>
     <tr>
-        <td><?= $row['id']; ?></td>
+        <td><?= $row['id']; ?></td> ini id nya auto ingkremen
         <td><?= $row['nama']; ?></td>
         <td><?= $row['kelas']; ?></td>
-        <td><?= $row['jurusan']; ?></td>
+        <td><?= $row['jurusan']; ?></td> 
         <td><?= $row['no_hp']; ?></td>
         <td>
             <a href="edit.php?id=<?= $row['id']; ?>">Edit</a> | 
