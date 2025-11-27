@@ -31,7 +31,7 @@
     <label>penulis</label>
     <input type="text" name="penulis"><br>
     <label>tahun terbit</label>
-    <input type="number" name="tahun terbit"><br>
+    <input type="number" name="tahun_terbit"><br>
     <label>kategori</label>
     <input type="text" name="kategori"><br>
     <button type="submit" name="btn">Submit</button>
