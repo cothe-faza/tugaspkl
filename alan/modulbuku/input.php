@@ -54,7 +54,7 @@
           <?php
           $no = 1;
           $sqlResult = $conn->query("SELECT*FROM tb_buku");
-          foreach($sqlResult as $data){
+          foreach($sqlResult as $conn){
             ?>
        <tr>
        <td><?=$no++?></td>
