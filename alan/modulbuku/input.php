@@ -14,7 +14,7 @@
    if(isset($_POST['btn'])){
        $a = $_POST['judul'];
        $b = $_POST['penulis'];
-       $c = $_POST['tahun terbit'];
+       $c = $_POST['tahun_terbit'];
        $d = $_POST['kategori'];
         $qry = $conn->query("INSERT INTO tb_buku(judul_buku, penulis, tahun_terbit, kategoti) VALUES ('$a','$b','$c','$d')");
     if($qry == true){
