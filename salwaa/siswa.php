@@ -1,6 +1,6 @@
 <?php
 class Siswa {
-    private $conn; 
+    private $conn;
     private $table = "tb_siswa";
 
     public $id;
@@ -72,4 +72,5 @@ class Siswa {
 
         return $stmt->execute();
     }
-}?>
+}
+?>

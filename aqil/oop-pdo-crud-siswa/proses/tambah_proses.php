@@ -13,5 +13,5 @@ $siswaObj->no_hp   = $_POST['no_hp'];
 
 $siswaObj->create();
 
-header("Location: ../views/index.php");
+header("location: ../views/index.php");
 ?>
