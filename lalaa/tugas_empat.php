@@ -4,7 +4,7 @@ if(isset($_POST['btn'])){
     $a = $_POST['nis'];
     $b = $_POST['nama'];
     $c = $_POST['kelas'];
-     $qry = $conn->query("nis,nama,kelas");
+     $qry = $conn->query(nis, nama, kelas);
 if($qry == true){
      echo"<script>alert('Data Berhasil diinput....')</script>";
 }else{
