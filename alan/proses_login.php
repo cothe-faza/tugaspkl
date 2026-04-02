@@ -16,16 +16,16 @@ if ($result->num_rows > 0) {
     if (password_verify($password, $data['password'])) {
         $_SESSION['login'] = true;
         $_SESSION['username'] = $data['username'];
-        header("Location: dashboard.php");
+        header("Location: proses_login.php");
         exit;
     } else {
         $_SESSION['error'] = "Password salah!";
-        header("Location: login.php");
+        header("Location: proses_login.php");
         exit;
     }
     } else {
     $_SESSION['error'] = "Username tidak ditemukan!";
-    header("Location: login.php");
+    header("Location: proses_login.php");
     exit;
     }
 
